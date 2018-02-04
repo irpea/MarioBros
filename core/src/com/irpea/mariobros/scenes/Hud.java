@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.irpea.mariobros.MarioBros;
 
-public class Hud implements Disposable{
+public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
@@ -27,7 +27,7 @@ public class Hud implements Disposable{
     Label worldLabel;
     Label marioLabel;
 
-    public Hud (SpriteBatch sb){
+    public Hud(SpriteBatch sb) {
         worldTimer = 300;
         timeCount = 0;
         score = 0;
@@ -56,7 +56,6 @@ public class Hud implements Disposable{
 
         stage.addActor(table);
     }
-
 
     @Override
     public void dispose() {

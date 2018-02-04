@@ -25,6 +25,7 @@ import com.irpea.mariobros.MarioBros;
 import com.irpea.mariobros.scenes.Hud;
 import com.irpea.mariobros.spries.Mario;
 import com.irpea.mariobros.tools.B2WorldCreator;
+import com.irpea.mariobros.tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
     //reference to our Game, used to set Screens
@@ -59,12 +60,13 @@ public class PlayScreen implements Screen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
-        new B2WorldCreator(world,map);
+        new B2WorldCreator(world, map);
         player = new Mario(world, this);
+        world.setContactListener(new WorldContactListener());
 
     }
 
-    public TextureAtlas getAtlas(){
+    public TextureAtlas getAtlas() {
         return atlas;
     }
 
