@@ -1,4 +1,4 @@
-package com.irpea.mariobros.screens.scenes;
+package com.irpea.mariobros.scenes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
