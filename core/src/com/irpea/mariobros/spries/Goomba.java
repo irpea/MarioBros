@@ -85,8 +85,8 @@ public class Goomba extends Enemy {
 
     }
 
-    public void draw(Batch batch){
-        if(!destroyed || stateTime < 1){
+    public void draw(Batch batch) {
+        if (!destroyed || stateTime < 1) {
             super.draw(batch);
         }
     }
