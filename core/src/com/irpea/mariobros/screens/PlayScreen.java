@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,7 +27,11 @@ import com.irpea.mariobros.spries.Mario;
 import com.irpea.mariobros.tools.B2WorldCreator;
 
 public class PlayScreen implements Screen {
+    //reference to our Game, used to set Screens
     private MarioBros game;
+    private TextureAtlas atlas;
+
+    //basic playscreen variables
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
@@ -43,6 +48,7 @@ public class PlayScreen implements Screen {
     private Mario player;
 
     public PlayScreen(MarioBros game) {
+        atlas = new TextureAtlas("Mario_and_enemies.pack");
         this.game = game;
         gamecam = new OrthographicCamera();
         gamePort = new FitViewport(MarioBros.V_WIDTH / MarioBros.PPM, MarioBros.V_HEIGHT / MarioBros.PPM, gamecam);
@@ -54,8 +60,12 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
         new B2WorldCreator(world,map);
-        player = new Mario(world);
+        player = new Mario(world, this);
 
+    }
+
+    public TextureAtlas getAtlas(){
+        return atlas;
     }
 
     @Override
@@ -76,9 +86,14 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
+        //handle user input
         handleInput(dt);
 
+        //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
+        player.update(dt);
+
+        //attach our gamecam to our players.x coordination
         gamecam.position.x = player.b2body.getPosition().x;
 
         gamecam.update();
@@ -87,11 +102,25 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        //seperate our update logic from render
         update(delta);
+
+        //Clear the game screen with black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //render our game map
         renderer.render();
+
+        //render our Box2DDebugLines
         b2dr.render(world, gamecam.combined);
+
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
+
+        //set our batch to now draw what the Hud camera sees
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
     }
