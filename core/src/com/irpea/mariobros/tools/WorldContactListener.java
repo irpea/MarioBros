@@ -40,13 +40,19 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 break;
+            case MarioBros.MARIO_BIT | MarioBros.ENEMY_BIT:
+                Gdx.app.log("MARIO", "DIED");
+                break;
+            case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:
+                ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
+                ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
+                break;
         }
 
     }
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.log("End contact", "");
 
     }
 

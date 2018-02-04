@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.irpea.mariobros.MarioBros;
 import com.irpea.mariobros.scenes.Hud;
-import com.irpea.mariobros.spries.Goomba;
+import com.irpea.mariobros.spries.Enemy;
 import com.irpea.mariobros.spries.Mario;
 import com.irpea.mariobros.tools.B2WorldCreator;
 import com.irpea.mariobros.tools.WorldContactListener;
@@ -40,10 +40,10 @@ public class PlayScreen implements Screen {
     //Box2D variables
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
 
     //sprites
     private Mario player;
-    private Goomba goomba;
 
     private Music music;
 
@@ -59,15 +59,13 @@ public class PlayScreen implements Screen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
-        new B2WorldCreator(this);
+        creator = new B2WorldCreator(this);
         player = new Mario(this);
         world.setContactListener(new WorldContactListener());
         music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
         music.setLooping(true);
+        music.setVolume(0.5f);
         music.play();
-
-        goomba = new Goomba(this, .32f, .32f);
-
     }
 
     public TextureAtlas getAtlas() {
@@ -98,7 +96,9 @@ public class PlayScreen implements Screen {
         //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
         player.update(dt);
-        goomba.update(dt);
+        for(Enemy enemy : creator.getGoombas())
+            enemy.update(dt);
+
         hud.update(dt);
 
         //attach our gamecam to our players.x coordination
@@ -126,7 +126,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        goomba.draw(game.batch);
+        for(Enemy enemy : creator.getGoombas())
+            enemy.draw(game.batch);
         game.batch.end();
 
         //set our batch to now draw what the Hud camera sees
