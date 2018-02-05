@@ -1,4 +1,4 @@
-package com.irpea.mariobros.spries;
+package com.irpea.mariobros.spries.items;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;

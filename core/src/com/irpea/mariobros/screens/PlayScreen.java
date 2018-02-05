@@ -17,8 +17,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.irpea.mariobros.MarioBros;
 import com.irpea.mariobros.scenes.Hud;
-import com.irpea.mariobros.spries.Enemy;
-import com.irpea.mariobros.spries.Mario;
+import com.irpea.mariobros.spries.enemies.Enemy;
+import com.irpea.mariobros.spries.tilObjects.Mario;
 import com.irpea.mariobros.tools.B2WorldCreator;
 import com.irpea.mariobros.tools.WorldContactListener;
 
@@ -96,9 +96,11 @@ public class PlayScreen implements Screen {
         //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
         player.update(dt);
-        for(Enemy enemy : creator.getGoombas())
+        for (Enemy enemy : creator.getGoombas()) {
             enemy.update(dt);
-
+            if (enemy.getX() < player.getX() + 224 / MarioBros.PPM)
+                enemy.b2body.setActive(true);
+        }
         hud.update(dt);
 
         //attach our gamecam to our players.x coordination
@@ -126,7 +128,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for(Enemy enemy : creator.getGoombas())
+        for (Enemy enemy : creator.getGoombas())
             enemy.draw(game.batch);
         game.batch.end();
 
@@ -140,11 +142,11 @@ public class PlayScreen implements Screen {
         gamePort.update(width, height);
     }
 
-    public TiledMap getMap(){
+    public TiledMap getMap() {
         return map;
     }
 
-    public  World getWorld(){
+    public World getWorld() {
         return world;
     }
 

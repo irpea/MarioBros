@@ -1,4 +1,4 @@
-package com.irpea.mariobros.spries;
+package com.irpea.mariobros.spries.tilObjects;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;

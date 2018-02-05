@@ -1,4 +1,4 @@
-package com.irpea.mariobros.spries;
+package com.irpea.mariobros.spries.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;

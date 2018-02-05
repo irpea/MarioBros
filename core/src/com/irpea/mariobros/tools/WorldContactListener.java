@@ -7,8 +7,8 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.irpea.mariobros.MarioBros;
-import com.irpea.mariobros.spries.Enemy;
-import com.irpea.mariobros.spries.InteractiveTileObject;
+import com.irpea.mariobros.spries.enemies.Enemy;
+import com.irpea.mariobros.spries.items.InteractiveTileObject;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -48,7 +48,6 @@ public class WorldContactListener implements ContactListener {
                 ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 break;
         }
-
     }
 
     @Override
